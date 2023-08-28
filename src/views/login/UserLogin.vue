@@ -3,7 +3,7 @@
     <div class="base-container" ref="box">
       <div class="top">
         <div class="header">
-          <img alt="logo" class="logo" src="@/assets/logo.svg" />
+          <img alt="logo" class="logo" src="@/assets/sugar.svg" />
           <span class="title">{{ title }}</span>
         </div>
         <div class="desc">{{ titleDesc }}</div>

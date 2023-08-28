@@ -1,6 +1,6 @@
 <template>
   <div class="logo">
-    <img alt="logo-img" class="logo-img" src="@/assets/logo.svg" /><span v-show="!isCollapsed">{{
+    <img alt="logo-img" class="logo-img" src="@/assets/sugar.svg" /><span v-show="!isCollapsed">{{
       title
     }}</span>
   </div>
@@ -58,10 +58,10 @@ const clickMenuItem = ({ item, key, keyPath }) => {
   // 文本水平居中
   text-align: center;
   height: 45px;
-  width: 75%;
+  width: 70%;
   color: fade(#fff, 85%);
   font-size: 24px;
-  margin: 2px 24px;
+  margin: 2px 26px;
   .logo-img {
     height: 28px;
     vertical-align: top;

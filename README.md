@@ -1,6 +1,6 @@
 # saga-web
 
-An admin background template developed with Vue3、Ant Design Vue 4.x and Vite.
+一站式项目管理平台 - developed with `Vue3`、`Ant Design Vue 4.x` and `Vite4`.
 
 ## Project Setup
 
