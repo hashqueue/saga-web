@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
-    "ant-design-vue": "^4.0.1",
+    "ant-design-vue": "^4.0.2",
     "axios": "^1.5.0",
     "dayjs": "^1.11.9",
     "monaco-editor": "^0.41.0",
@@ -20,6 +20,7 @@
     "screenfull": "^6.0.2",
     "three": "^0.155.0",
     "vanta": "^0.5.24",
+    "vditor": "^3.9.5",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
