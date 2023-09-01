@@ -9,6 +9,40 @@
       @on-page-change="onPageChange"
     >
       <template #tableFilter>
+        <a-form
+          ref="filterFormRef"
+          :model="filterForm"
+          :wrapper-col="{ span: 20 }"
+          @finish="handleFilterFinish"
+        >
+          <a-row>
+            <a-col :span="8">
+              <a-form-item name="name" label="项目名">
+                <a-input v-model:value="filterForm.name" placeholder="项目名" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item name="owner" label="负责人">
+                <a-input v-model:value="filterForm.owner" placeholder="请输入负责人(英文用户名)" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item name="project_status" label="状态">
+                <a-select
+                  v-model:value="filterForm.project_status"
+                  placeholder="请选择状态"
+                  :options="statusOptions"
+                  :allow-clear="true"
+                ></a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-form-item>
+            <a-button type="primary" html-type="submit">查询</a-button>
+            <a-button style="margin-left: 10px" @click="resetFilterForm">重置</a-button>
+          </a-form-item>
+        </a-form>
+        <a-divider />
         <a-button type="primary" @click="createProject" v-permission="btnPermissions.project.create"
           >新增项目</a-button
         >
@@ -63,30 +97,6 @@
     ></standard-table>
     <a-button style="margin-top: 16px" @click="submitAddMembers" type="primary">提交</a-button>
   </a-drawer>
-  <!--    <a-col :span="16">-->
-  <!--      <a-card v-if="projectInfo" style="margin-left: 5px">-->
-  <!--        <a-descriptions :title="projectInfo.name" size="default">-->
-  <!--          <a-descriptions-item label="ID">{{ projectInfo.id }}</a-descriptions-item>-->
-  <!--          <a-descriptions-item label="负责人"-->
-  <!--            >{{ projectInfo.owner }} {{ projectInfo.owner_name }}</a-descriptions-item-->
-  <!--          >-->
-  <!--          <a-descriptions-item label="状态">-->
-  <!--            <a-tag :color="statusEnum[projectInfo.project_status].color">{{-->
-  <!--              statusEnum[projectInfo.project_status].value-->
-  <!--            }}</a-tag>-->
-  <!--          </a-descriptions-item>-->
-  <!--          <a-descriptions-item label="迭代数量">{{ projectInfo.sprint_count }}</a-descriptions-item>-->
-  <!--          <a-descriptions-item label="成员数量">{{-->
-  <!--            projectInfo.members.length-->
-  <!--          }}</a-descriptions-item>-->
-  <!--          <a-descriptions-item label="创建人">{{ projectInfo.created_by }}</a-descriptions-item>-->
-  <!--          <a-descriptions-item label="最后修改人">{{ projectInfo.updated_by }}</a-descriptions-item>-->
-  <!--          <a-descriptions-item label="创建时间">{{ projectInfo.created_at }}</a-descriptions-item>-->
-  <!--          <a-descriptions-item label="修改时间">{{ projectInfo.updated_at }}</a-descriptions-item>-->
-  <!--        </a-descriptions>-->
-  <!--        <a-divider />-->
-  <!--      </a-card>-->
-  <!--    </a-col>-->
 </template>
 
 <script setup>
@@ -101,7 +111,7 @@ import {
 import ProjectForm from './ProjectForm.vue'
 import StandardTable from '@/components/StandardTable.vue'
 import { getAllUserList } from '@/apis/system/user'
-import { btnPermissions, statusEnum } from '@/utils/enum'
+import { btnPermissions, statusEnum, statusOptions } from '@/utils/enum'
 
 const router = useRouter()
 
@@ -111,6 +121,7 @@ const modalOpen = ref(false)
 const tableLoading = ref(false)
 const projectId = ref(null)
 const paginationData = ref({})
+const projectQueryParams = ref({ page: 1, page_size: 10 })
 const columns = [
   {
     title: 'ID',
@@ -164,7 +175,7 @@ const columns = [
 ]
 const getProjectListData = () => {
   tableLoading.value = true
-  getProjectList().then((res) => {
+  getProjectList(projectQueryParams.value).then((res) => {
     const { page, results, page_size, count } = res
     dataList.value = results
     paginationData.value = {
@@ -180,14 +191,13 @@ const getProjectListData = () => {
 }
 getProjectListData()
 const viewProjectDetail = (record) => {
-  getProjectDetail(record.id).then((res) => {})
+  router.push({ name: `/projects/:projectId`, params: { projectId: record.id } })
 }
 const onPageChange = (pagination, filters, sorter, currentDataSource) => {
-  const params = {}
-  params.page = pagination.current
-  params.page_size = pagination.pageSize
+  projectQueryParams.value.page = pagination.current
+  projectQueryParams.value.page_size = pagination.pageSize
   tableLoading.value = true
-  getProjectList(params).then((res) => {
+  getProjectList(projectQueryParams.value).then((res) => {
     const { page, results, page_size, count } = res
     dataList.value = results
     paginationData.value = {
@@ -275,6 +285,29 @@ const onSelectChange = (selectedRowKeys, selectedRows) => {
 }
 const closeDrawer = () => {
   drawerOpen.value = false
+}
+
+// project filter
+const filterFormRef = ref()
+const filterForm = ref({
+  name: '',
+  owner: '',
+  project_status: null
+})
+const handleFilterFinish = (values) => {
+  projectQueryParams.value = { ...projectQueryParams.value, ...values }
+  // console.log('handleFilterFinish', projectQueryParams.value)
+  getProjectListData()
+}
+const resetFilterForm = () => {
+  filterFormRef.value.resetFields()
+  for (const valueKey in filterForm.value) {
+    if (valueKey in projectQueryParams.value) {
+      delete projectQueryParams.value[valueKey]
+    }
+  }
+  // console.log('resetFilterForm', projectQueryParams.value)
+  getProjectListData()
 }
 </script>
 

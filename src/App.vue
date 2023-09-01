@@ -14,10 +14,10 @@ import 'dayjs/locale/zh-cn'
 
 dayjs.locale('zh-cn')
 const appTheme = {
-  algorithm: theme.defaultAlgorithm,
-  token: {
-    colorPrimary: '#00b96b'
-  }
+  algorithm: theme.defaultAlgorithm
+  // token: {
+  //   colorPrimary: '#00b96b'
+  // }
 }
 </script>
 
