@@ -56,7 +56,7 @@
               >添加项目成员</a
             >
             <a-divider type="vertical" />
-            <a @click="viewProjectDetail(record)">详情</a>
+            <a @click="viewSprintList(record)">迭代列表</a>
             <a-divider type="vertical" />
             <a-popconfirm
               title="确定删除该项目吗？"
@@ -190,8 +190,8 @@ const getProjectListData = () => {
   })
 }
 getProjectListData()
-const viewProjectDetail = (record) => {
-  router.push({ name: `/projects/:projectId`, params: { projectId: record.id } })
+const viewSprintList = (record) => {
+  router.push({ name: `projects/:projectId/sprints`, params: { projectId: record.id } })
 }
 const onPageChange = (pagination, filters, sorter, currentDataSource) => {
   projectQueryParams.value.page = pagination.current
