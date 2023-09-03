@@ -109,14 +109,15 @@ const columns = [
 const getUserListData = () => {
   tableLoading.value = true
   getUserList().then((res) => {
-    dataList.value = res.results
+    const { page, results, page_size, count } = res
+    dataList.value = results
     paginationData.value = {
-      total: res.count,
-      current: res.current_page,
-      pageSize: 10,
+      total: count,
+      current: page,
+      pageSize: page_size,
       pageSizeOptions: ['10', '20', '30', '40', '50'],
       showSizeChanger: true,
-      showTotal: () => `共 ${res.count} 条`
+      showTotal: () => `共 ${count} 条`
     }
     tableLoading.value = false
   })

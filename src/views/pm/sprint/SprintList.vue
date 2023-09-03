@@ -25,6 +25,7 @@
             </template>
           </a-card>
         </template>
+        <a-empty v-if="!sprintListData.length" />
         <a-divider />
         <a-pagination
           :total="sprintPaginationData.total"

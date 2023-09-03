@@ -38,6 +38,13 @@ import { useSprintStore } from '@/stores/sprint'
 const route = useRoute()
 const sprintStore = useSprintStore()
 const sprintInfo = ref(null)
+const getSprintDetailData = () => {
+  if (!route.params.sprintId) return
+  getSprintDetail(route.params.sprintId).then((res) => {
+    sprintInfo.value = res
+  })
+}
+getSprintDetailData()
 watch(
   () => route.params.sprintId,
   (newSprintId) => {
@@ -48,18 +55,11 @@ watch(
   () => sprintStore.getNeedUpdateSprintDetail,
   (newNeedUpdateSprintDetail) => {
     if (!newNeedUpdateSprintDetail) return
-    getSprintDetailData(route.params.sprintId)
+    getSprintDetailData()
     sprintStore.setNeedUpdateSprintDetail(false)
   },
   { immediate: true } // 在初始化时就立即执行一次
 )
-const getSprintDetailData = () => {
-  if (!route.params.sprintId) return
-  getSprintDetail(route.params.sprintId).then((res) => {
-    sprintInfo.value = res
-  })
-}
-getSprintDetailData()
 </script>
 
 <style scoped></style>
