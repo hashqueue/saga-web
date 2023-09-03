@@ -132,7 +132,7 @@ const sprintTitle = ref('新增迭代')
 const sprintModalOpen = ref(false)
 const allProjectUserList = ref([])
 const sprintPaginationData = ref({})
-const sprintQueryParams = ref({ page: 1, page_size: 10, project_id: projectId })
+const sprintQueryParams = ref({ page: 1, page_size: 20, project_id: projectId })
 const sprintListData = ref([])
 const sprintListLoading = ref(false)
 const onSprintPageChange = (page, pageSize) => {
@@ -190,7 +190,6 @@ const clickSprintAction = ({ item, key, keyPath }) => {
   if (key === 'editSprint') {
     sprintTitle.value = '修改迭代'
     sprintModalOpen.value = true
-    // TODO 修改迭代完成后，需要更新迭代详情页的数据
   } else if (key === 'deleteSprint') {
     Modal.warning({
       title: '提示',

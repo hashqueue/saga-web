@@ -55,6 +55,7 @@
 import { computed, ref, watch } from 'vue'
 import dayjs from 'dayjs'
 import { createSprint, updateSprint, getSprintDetail } from '@/apis/pm/sprint'
+import { useSprintStore } from '@/stores/sprint'
 import StandardModal from '@/components/StandardModal.vue'
 import { statusOptions } from '@/utils/enum'
 
@@ -85,6 +86,7 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['closeModal', 'getLatestDataList'])
+const sprintStore = useSprintStore()
 
 const createUpdateFormRef = ref()
 const labelCol = { span: 5 }
@@ -160,6 +162,8 @@ const onOk = () => {
           emit('getLatestDataList')
           createUpdateFormRef.value.resetFields()
           emit('closeModal')
+          // 修改迭代完成后，需要更新迭代详情页的数据
+          sprintStore.setNeedUpdateSprintDetail(true)
         })
       } else {
         createSprint(values).then(() => {

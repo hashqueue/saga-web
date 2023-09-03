@@ -33,13 +33,23 @@ import { useRoute } from 'vue-router'
 
 import { getSprintDetail } from '@/apis/pm/sprint'
 import { statusEnum } from '@/utils/enum'
+import { useSprintStore } from '@/stores/sprint'
 
 const route = useRoute()
+const sprintStore = useSprintStore()
 const sprintInfo = ref(null)
 watch(
   () => route.params.sprintId,
   (newSprintId) => {
     getSprintDetailData(newSprintId)
+  }
+)
+watch(
+  () => sprintStore.getNeedUpdateSprintDetail,
+  (newNeedUpdateSprintDetail) => {
+    if (!newNeedUpdateSprintDetail) return
+    getSprintDetailData(route.params.sprintId)
+    sprintStore.setNeedUpdateSprintDetail(false)
   }
 )
 const getSprintDetailData = () => {
