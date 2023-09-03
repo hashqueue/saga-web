@@ -50,7 +50,8 @@ watch(
     if (!newNeedUpdateSprintDetail) return
     getSprintDetailData(route.params.sprintId)
     sprintStore.setNeedUpdateSprintDetail(false)
-  }
+  },
+  { immediate: true } // 在初始化时就立即执行一次
 )
 const getSprintDetailData = () => {
   if (!route.params.sprintId) return

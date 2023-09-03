@@ -58,6 +58,7 @@ import { createSprint, updateSprint, getSprintDetail } from '@/apis/pm/sprint'
 import { useSprintStore } from '@/stores/sprint'
 import StandardModal from '@/components/StandardModal.vue'
 import { statusOptions } from '@/utils/enum'
+import { changeObjValUndefined2Null } from '@/utils/common'
 
 const props = defineProps({
   projectName: {
@@ -154,8 +155,10 @@ const onOk = () => {
         values.started_at = dateTimes[0].format('YYYY-MM-DD HH:mm')
         values.finished_at = dateTimes[1].format('YYYY-MM-DD HH:mm')
       } else {
-        delete values.started_at
+        values.started_at = null
+        values.finished_at = null
       }
+      changeObjValUndefined2Null(values)
       if (props.title === '修改迭代') {
         updateSprint(props.sprintId, values).then(() => {
           // 重新获取一遍迭代信息
