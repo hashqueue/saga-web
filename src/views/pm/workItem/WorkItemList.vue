@@ -198,8 +198,8 @@ const props = defineProps({
 const workItemId = ref(null)
 const sprintInfo = ref(null)
 const allUserDataList = ref([])
-const dataList = ref([])
 
+const dataList = ref([])
 const createFormModalOpen = ref(false)
 const updateFormModalOpen = ref(false)
 const title = ref(`新增${workItemTypesEnum[props.workItemType].value}`)
@@ -299,7 +299,7 @@ const getWorkItemListData = () => {
 getWorkItemListData()
 const onPageChange = (pagination, filters, sorter, currentDataSource) => {
   workItemQueryParams.value.page = pagination.current
-  workItemQueryParams.value.size = pagination.pageSize
+  workItemQueryParams.value.page_size = pagination.pageSize
   tableLoading.value = true
   getWorkItemList(workItemQueryParams.value).then((res) => {
     const { page, results, page_size, count } = res

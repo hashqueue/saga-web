@@ -353,6 +353,11 @@ const props = defineProps({
 const emit = defineEmits(['closeModal', 'getLatestDataList'])
 const userStore = useUserStore()
 
+// 变更记录
+const changelogs = ref([])
+
+// 详情
+const workItemInfo = ref(null)
 const contentActiveKey = ref('detail')
 const createUpdateForm = ref({
   name: '',
@@ -368,7 +373,6 @@ const createUpdateForm = ref({
   sprint: props.sprintInfo.id,
   followers: []
 })
-const workItemInfo = ref(null)
 const createUpdateFormRef = ref()
 const createUpdateRules = {
   name: [
@@ -379,20 +383,6 @@ const createUpdateRules = {
   priority: [{ required: true, trigger: 'change', message: '优先级不能为空' }],
   work_item_status: [{ required: true, trigger: 'change', message: '工作项状态不能为空' }]
 }
-const userFileUploadUrl = `http://${location.host}${import.meta.env.VITE_BASE_URL}/pm/files/`
-const userFileUploadHeaders = { Authorization: `Bearer ${userStore.getToken}` }
-const fileList = ref([])
-const userFileList = ref([])
-const initLoading = ref(false)
-const userUploadFileIds = ref([])
-
-const activityActiveKey = ref('comment')
-const comments = ref([])
-const commentValue = ref('')
-const commentSubmitting = ref(false)
-
-const changelogs = ref([])
-
 const mdEditorOptions = ref({
   height: '650px',
   width: '100%',
@@ -437,41 +427,16 @@ const followersOptions = computed(() => {
   return tmpOwnerArr
 })
 
-watch(
-  () => props.modalOpen,
-  () => {
-    if (props.modalOpen) {
-      getWorkItemDetail(props.workItemId).then((res) => {
-        workItemInfo.value = res
-        const {
-          created_at,
-          updated_at,
-          parent,
-          id,
-          created_by,
-          updated_by,
-          owner_name,
-          sprint_name,
-          ...workItemObj
-        } = res
-        if (workItemObj.deadline) {
-          workItemObj.deadline = dayjs(workItemObj.deadline)
-        } else {
-          workItemObj.deadline = ''
-        }
-        createUpdateForm.value = workItemObj
-      })
-      getUserFileList()
-      getUserCommentList()
-      getChangelogList({ size: 50, work_item_id: props.workItemId }).then((res) => {
-        changelogs.value = res.results
-      })
-    }
-  }
-)
+// 文件
+const userFileUploadUrl = `http://${location.host}${import.meta.env.VITE_BASE_URL}/pm/files/`
+const userFileUploadHeaders = { Authorization: `Bearer ${userStore.getToken}` }
+const fileList = ref([])
+const userFileList = ref([])
+const initLoading = ref(false)
+const userUploadFileIds = ref([])
 const getUserFileList = () => {
   initLoading.value = true
-  getFileList({ size: 50, work_item_id: props.workItemId }).then((res) => {
+  getFileList({ page_size: 50, work_item_id: props.workItemId }).then((res) => {
     userFileList.value = res.results
     initLoading.value = false
   })
@@ -538,6 +503,12 @@ const handleFileUploadChange = (info) => {
     message.error(`文件 <${info.file.name}> 上传失败.`)
   }
 }
+
+// 评论
+const activityActiveKey = ref('comment')
+const comments = ref([])
+const commentValue = ref('')
+const commentSubmitting = ref(false)
 const handleCommentSubmit = () => {
   if (!commentValue.value) {
     message.error('评论内容不能为空！')
@@ -551,7 +522,7 @@ const handleCommentSubmit = () => {
   })
 }
 const getUserCommentList = () => {
-  getCommentList({ size: 50, work_item_id: props.workItemId }).then((res) => {
+  getCommentList({ page_size: 50, work_item_id: props.workItemId }).then((res) => {
     comments.value = res.results
   })
 }
@@ -560,6 +531,8 @@ const getUserCommentList = () => {
 //     getUserCommentList()
 //   })
 // }
+
+// submit
 const onOk = () => {
   createUpdateFormRef.value
     .validateFields()
@@ -607,6 +580,38 @@ const onCancel = () => {
   commentValue.value = ''
   changelogs.value = []
 }
+watch(
+  () => props.modalOpen,
+  () => {
+    if (props.modalOpen) {
+      getWorkItemDetail(props.workItemId).then((res) => {
+        workItemInfo.value = res
+        const {
+          created_at,
+          updated_at,
+          parent,
+          id,
+          created_by,
+          updated_by,
+          owner_name,
+          sprint_name,
+          ...workItemObj
+        } = res
+        if (workItemObj.deadline) {
+          workItemObj.deadline = dayjs(workItemObj.deadline)
+        } else {
+          workItemObj.deadline = ''
+        }
+        createUpdateForm.value = workItemObj
+      })
+      getUserFileList()
+      getUserCommentList()
+      getChangelogList({ page_size: 50, work_item_id: props.workItemId }).then((res) => {
+        changelogs.value = res.results
+      })
+    }
+  }
+)
 </script>
 
 <style scoped>

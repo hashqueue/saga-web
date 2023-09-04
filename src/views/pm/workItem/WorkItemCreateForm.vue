@@ -128,7 +128,9 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['closeModal', 'getLatestDataList'])
+
 const userStore = useUserStore()
+
 const userUploadFileIds = ref([])
 const mdEditorOptions = ref({
   height: '650px',
@@ -203,8 +205,6 @@ const onOk = () => {
       // 设置截止日期
       if (values.deadline) {
         values.deadline = values.deadline.format('YYYY-MM-DD HH:mm')
-      } else {
-        delete values.deadline
       }
       values.sprint = createUpdateForm.value.sprint
       values.work_item_type = createUpdateForm.value.work_item_type

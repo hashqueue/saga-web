@@ -13,9 +13,9 @@
             <template #title>
               <a-tooltip>
                 <template #title>{{ item.name }}</template>
-                <h4 class="sprint-list-title">
+                <span :class="{ 'active-sprint-title': sprintDetailId === item.id }">
                   {{ item.name.length > 8 ? item.name.slice(0, 8) + '...' : item.name }}
-                </h4>
+                </span>
               </a-tooltip>
             </template>
             <template #extra>
@@ -248,8 +248,7 @@ const onTabChange = (key) => {
 </script>
 
 <style scoped>
-.sprint-list-title {
+.active-sprint-title {
   color: #1677ff;
-  margin: 0 0;
 }
 </style>
