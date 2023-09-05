@@ -201,7 +201,7 @@ const clickSprintAction = ({ item, key, keyPath }) => {
       closable: true,
       onOk: () => {
         deleteSprintDetail(sprintDetailId.value).then(() => {
-          router.push({ name: `projects/:projectId/sprints`, params: { projectId: projectId } })
+          router.push({ name: `/projects/:projectId/sprints`, params: { projectId: projectId } })
           getSprintListData()
           sprintDetailId.value = null
           tabKey.value = 'overview'

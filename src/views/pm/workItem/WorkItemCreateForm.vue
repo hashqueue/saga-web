@@ -208,7 +208,6 @@ const onOk = () => {
       }
       values.sprint = createUpdateForm.value.sprint
       values.work_item_type = createUpdateForm.value.work_item_type
-      values.work_item_status = createUpdateForm.value.work_item_status
       createWorkItem(values).then((res) => {
         emit('getLatestDataList')
         createUpdateFormRef.value.resetFields()

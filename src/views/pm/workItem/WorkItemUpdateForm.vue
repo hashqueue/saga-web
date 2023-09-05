@@ -113,7 +113,7 @@
                       <a-select
                         v-model:value="createUpdateForm.work_item_status"
                         placeholder="请选择工作项状态"
-                        :options="statusOptions"
+                        :options="workItemStatusOptions"
                       ></a-select>
                     </a-form-item>
                   </a-col>
@@ -322,7 +322,7 @@ import MarkdownEditor from '@/components/editor/MarkdownEditor.vue'
 import {
   bugTypeOptions,
   processResultOptions,
-  statusOptions,
+  workItemStatusOptions,
   priorityOptions,
   severityOptions,
   workItemTypesEnum
@@ -362,9 +362,9 @@ const contentActiveKey = ref('detail')
 const createUpdateForm = ref({
   name: '',
   owner: null,
-  work_item_type: props.title === '修改需求' ? 0 : props.title === '修改任务' ? 1 : 2,
+  work_item_type: props.title === '修改需求' ? 1 : props.title === '修改任务' ? 2 : 3,
   priority: null,
-  work_item_status: 0,
+  work_item_status: 1,
   severity: null,
   bug_type: null,
   process_result: null,
@@ -543,7 +543,6 @@ const onOk = () => {
       }
       values.sprint = createUpdateForm.value.sprint
       values.work_item_type = createUpdateForm.value.work_item_type
-      values.work_item_status = createUpdateForm.value.work_item_status
       // console.log(values)
       updateWorkItem(props.workItemId, values).then(() => {
         emit('getLatestDataList')

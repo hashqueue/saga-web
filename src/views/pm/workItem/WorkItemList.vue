@@ -39,8 +39,8 @@
             </a-form-item>
           </a-col>
           <a-col :span="6">
-            <a-form-item name="creator" label="创建人">
-              <a-input v-model:value="filterForm.creator" placeholder="请输入创建人" />
+            <a-form-item name="created_by" label="创建人">
+              <a-input v-model:value="filterForm.created_by" placeholder="请输入创建人" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -81,8 +81,8 @@
             <a-form-item name="work_item_status" label="状&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp态">
               <a-select
                 v-model:value="filterForm.work_item_status"
-                placeholder="请选择状态"
-                :options="statusOptions"
+                placeholder="请选择工作项状态"
+                :options="workItemStatusOptions"
                 :allow-clear="true"
               ></a-select>
             </a-form-item>
@@ -175,7 +175,7 @@ import {
   workItemTypesEnum,
   bugTypeOptions,
   processResultOptions,
-  statusOptions,
+  workItemStatusOptions,
   priorityOptions,
   severityOptions
 } from '@/utils/enum'
@@ -187,7 +187,7 @@ const props = defineProps({
   workItemType: {
     type: Number,
     required: true,
-    default: 0
+    default: 1
   },
   sprintId: {
     type: Number,
@@ -344,7 +344,7 @@ const filterForm = ref({
   name: '',
   owner: '',
   desc: '',
-  creator: '',
+  created_by: '',
   work_item_status: null,
   priority: null,
   bug_type: null,

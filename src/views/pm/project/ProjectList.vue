@@ -191,7 +191,7 @@ const getProjectListData = () => {
 }
 getProjectListData()
 const viewSprintList = (record) => {
-  router.push({ name: `projects/:projectId/sprints`, params: { projectId: record.id } })
+  router.push({ name: `/projects/:projectId/sprints`, params: { projectId: record.id } })
 }
 const onPageChange = (pagination, filters, sorter, currentDataSource) => {
   projectQueryParams.value.page = pagination.current
