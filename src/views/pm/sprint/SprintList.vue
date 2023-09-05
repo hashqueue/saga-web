@@ -2,7 +2,11 @@
   <a-row :span="24">
     <a-col :span="4">
       <a-card title="迭代列表" size="small" :loading="sprintListLoading">
-        <template #extra><a @click="createSprint">新增迭代</a></template>
+        <template #extra
+          ><a @click="createSprint" v-permission="btnPermissions.sprint.create"
+            >新增迭代</a
+          ></template
+        >
         <template v-for="(item, index) in sprintListData" :key="index">
           <a-card
             :hoverable="true"
@@ -84,8 +88,17 @@
             </a>
             <template #overlay>
               <a-menu @click="clickSprintAction">
-                <a-menu-item :key="'editSprint'">修改迭代</a-menu-item>
-                <a-menu-item :key="'deleteSprint'">删除迭代</a-menu-item>
+                <!-- 这里的menu-item的权限控制比较特殊 -->
+                <a-menu-item
+                  :key="'editSprint'"
+                  :disabled="!buttonPermissions.includes(btnPermissions.sprint.update)"
+                  >修改迭代</a-menu-item
+                >
+                <a-menu-item
+                  :key="'deleteSprint'"
+                  :disabled="!buttonPermissions.includes(btnPermissions.sprint.delete)"
+                  >删除迭代</a-menu-item
+                >
               </a-menu>
             </template>
           </a-dropdown>
@@ -115,10 +128,14 @@ import {
 import { getProjectDetail, getProjectMembers } from '@/apis/pm/project'
 import { getSprintList, deleteSprintDetail } from '@/apis/pm/sprint'
 import SprintForm from '@/views/pm/sprint/SprintForm.vue'
-import { statusEnum } from '@/utils/enum'
+import { statusEnum, btnPermissions } from '@/utils/enum'
+import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const router = useRouter()
+const userStore = useUserStore()
+
+const buttonPermissions = userStore.getButtonPermissions
 
 // project
 const projectId = Number(route.params.projectId)

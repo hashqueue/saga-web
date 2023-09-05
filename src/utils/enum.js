@@ -12,7 +12,9 @@ export const btnPermissions = {
     update: '修改项目',
     delete: '删除项目',
     addMembers: '添加项目成员'
-  }
+  },
+  sprint: { create: '新增迭代', update: '修改迭代', delete: '删除迭代' },
+  workItem: { create: '新增工作项', update: '修改工作项', delete: '删除工作项' }
 }
 
 /*

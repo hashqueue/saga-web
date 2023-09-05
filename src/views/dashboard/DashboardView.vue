@@ -1,21 +1,46 @@
 <template>
   <a-skeleton :loading="skeletonLoading" active>
     <a-row justify="space-between">
-      <a-col :span="12">
+      <a-col :span="3">
         <a-card class="statistic-card">
           <a-statistic title="角色数量" :value="userStatisticsData.role_count" />
         </a-card>
       </a-col>
-      <a-col :span="12">
+      <a-col :span="3">
         <a-card class="statistic-card">
           <a-statistic title="权限数量" :value="userStatisticsData.permission_count" />
+        </a-card>
+      </a-col>
+      <a-col :span="3">
+        <a-card class="statistic-card">
+          <a-statistic title="项目数量" :value="userStatisticsData.project_count" />
+        </a-card>
+      </a-col>
+      <a-col :span="3">
+        <a-card class="statistic-card">
+          <a-statistic title="迭代数量" :value="userStatisticsData.sprint_count" />
+        </a-card>
+      </a-col>
+      <a-col :span="3">
+        <a-card class="statistic-card">
+          <a-statistic title="需求数量" :value="userStatisticsData.requirement_count" />
+        </a-card>
+      </a-col>
+      <a-col :span="3">
+        <a-card class="statistic-card">
+          <a-statistic title="任务数量" :value="userStatisticsData.task_count" />
+        </a-card>
+      </a-col>
+      <a-col :span="3">
+        <a-card class="statistic-card">
+          <a-statistic title="缺陷数量" :value="userStatisticsData.bug_count" />
         </a-card>
       </a-col>
     </a-row>
 
     <a-row type="flex" justify="space-between">
       <a-col :span="12">
-        <a-card title="Python" class="card">
+        <a-card title="Python" class="card" style="margin-right: 3px">
           <a-switch
             style="margin-bottom: 15px"
             v-model:checked="pythonEditorOptions.readOnly"
@@ -29,7 +54,7 @@
         </a-card>
       </a-col>
       <a-col :span="12">
-        <a-card title="JSON" class="card">
+        <a-card title="JSON" class="card" style="margin-left: 3px">
           <a-switch
             style="margin-bottom: 15px"
             v-model:checked="jsonEditorOptions.readOnly"
@@ -57,15 +82,14 @@ const userStatisticsData = ref({
   permission_count: null
 })
 getUserStatistics().then((res) => {
-  const { role_count, permission_count } = res
-  userStatisticsData.value = { role_count, permission_count }
+  userStatisticsData.value = res
   skeletonLoading.value = false
 })
 
 const pythonCode = ref(
   'def convert_tree2list(tree_data):\n' +
     '    """\n' +
-    '    将树形结构数据转换为列表结构数据, 列表结构数据中的每一项不能包含children\n' +
+    '    将树形结构数据转换为列表结构数据\n' +
     '    @param tree_data:\n' +
     '    @return:\n' +
     '    """\n' +
@@ -175,10 +199,8 @@ const jsonEditorOptions = ref({
 <style scoped>
 .card {
   height: 700px;
-  width: 99%;
 }
 .statistic-card {
-  width: 99%;
   margin-bottom: 10px;
 }
 </style>

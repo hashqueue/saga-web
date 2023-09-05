@@ -104,14 +104,17 @@
         </a-form-item>
       </a-form>
       <a-divider />
-      <a-button type="primary" @click="createWorkItem">{{
-        `新增${workItemTypesEnum[workItemType].value}`
-      }}</a-button>
+      <a-button
+        type="primary"
+        @click="createWorkItem"
+        v-permission="btnPermissions.workItem.create"
+        >{{ `新增${workItemTypesEnum[workItemType].value}` }}</a-button
+      >
     </template>
     <template #action="{ column, record }">
       <template v-if="column.key === 'action'">
         <span>
-          <a @click="updateWorkItem(record)">修改</a>
+          <a @click="updateWorkItem(record)" v-permission="btnPermissions.workItem.update">修改</a>
           <a-divider type="vertical" />
           <a-popconfirm
             :title="`确定删除该${workItemTypesEnum[workItemType].value}吗？`"
@@ -119,7 +122,7 @@
             cancel-text="取消"
             @confirm="deleteWorkItem(record.id)"
           >
-            <a>删除</a>
+            <a v-permission="btnPermissions.workItem.delete">删除</a>
           </a-popconfirm>
         </span>
       </template>
@@ -177,7 +180,8 @@ import {
   processResultOptions,
   workItemStatusOptions,
   priorityOptions,
-  severityOptions
+  severityOptions,
+  btnPermissions
 } from '@/utils/enum'
 import { getSprintDetail } from '@/apis/pm/sprint'
 import { getProjectMembers } from '@/apis/pm/project'
