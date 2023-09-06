@@ -8,8 +8,8 @@
         </div>
         <div class="desc">{{ titleDesc }}</div>
         <div>
-          <div class="desc-item">用户名：test，密码：test3306，拥有普通用户权限</div>
           <div class="desc-item">用户名：admin，密码：admin3306，拥有超级管理员权限</div>
+          <div class="desc-item">用户名：test，密码：test3306，拥有普通用户权限</div>
           <div class="desc-item">演示环境默认禁用所有数据删除权限</div>
         </div>
       </div>
@@ -53,6 +53,19 @@
             >
           </a-form-item>
         </a-form>
+      </div>
+      <div class="filings">
+        <span>
+          <a class="filings-item" href="https://beian.miit.gov.cn/" target="_blank"
+            >主体备案号：京ICP备19057126号</a
+          >
+        </span>
+        <br />
+        <span>
+          <a class="filings-item" href="https://beian.miit.gov.cn/" target="_blank"
+            >网站备案号：京ICP备19057126号-2</a
+          >
+        </span>
       </div>
     </div>
   </a-spin>
@@ -124,6 +137,18 @@ const onLoginFinishFailed = () => {
 </script>
 
 <style scoped lang="less">
+.filings {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 150px;
+  .filings-item {
+    color: fade(#000, 85%);
+  }
+  :hover .filings-item {
+    color: #fff;
+  }
+}
+
 .base-container {
   display: flex;
   // 元素垂直显示
