@@ -159,13 +159,13 @@ const columns = [
   {
     title: '创建时间',
     dataIndex: 'created_at',
-    width: 150,
+    width: 170,
     key: 'created_at'
   },
   {
     title: '修改时间',
     dataIndex: 'updated_at',
-    width: 150,
+    width: 170,
     key: 'updated_at'
   },
   {
