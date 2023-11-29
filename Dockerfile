@@ -1,4 +1,4 @@
-FROM node:18.17.1-slim
+FROM node:20.10.0-slim
 COPY ./ /app
 WORKDIR /app
 RUN npm config set registry https://registry.npmmirror.com/ \
