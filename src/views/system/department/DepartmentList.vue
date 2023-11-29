@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { getDepartmentTreeList, deleteDepartmentDetail } from '@/apis/system/department'
 import DepartmentForm from './DepartmentForm.vue'
 import StandardTable from '@/components/StandardTable.vue'
@@ -133,6 +133,19 @@ const deleteDepartment = (departmentId) => {
     getDepartmentTreeListData()
   })
 }
+// SSE
+let eventSource
+onMounted(() => {
+  eventSource = new EventSource(
+    `http://${location.host}${import.meta.env.VITE_BASE_URL}/system/monitor/`
+  )
+  eventSource.onmessage = (event) => {
+    console.log(JSON.parse(event.data))
+  }
+})
+onUnmounted(() => {
+  eventSource.close()
+})
 </script>
 
 <style scoped></style>
