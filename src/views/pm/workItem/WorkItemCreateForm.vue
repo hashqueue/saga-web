@@ -185,7 +185,7 @@ const createUpdateForm = ref({
   bug_type: null,
   process_result: null,
   desc: '',
-  deadline: '',
+  deadline: null,
   sprint: props.sprintInfo.id,
   followers: []
 })

@@ -369,7 +369,7 @@ const createUpdateForm = ref({
   bug_type: null,
   process_result: null,
   desc: '',
-  deadline: '',
+  deadline: null,
   sprint: props.sprintInfo.id,
   followers: []
 })
@@ -599,7 +599,7 @@ watch(
         if (workItemObj.deadline) {
           workItemObj.deadline = dayjs(workItemObj.deadline)
         } else {
-          workItemObj.deadline = ''
+          workItemObj.deadline = null
         }
         createUpdateForm.value = workItemObj
       })

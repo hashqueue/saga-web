@@ -103,7 +103,7 @@ const createUpdateForm = ref({
   name: '',
   owner: null,
   started_at: [],
-  finished_at: '',
+  finished_at: null,
   sprint_status: 1,
   project: props.projectId
 })
@@ -127,7 +127,7 @@ watch(
             sprint_status: res.sprint_status,
             project: res.project,
             started_at: [dayjs(res.started_at), dayjs(res.finished_at)],
-            finished_at: ''
+            finished_at: null
           }
         } else {
           createUpdateForm.value = {
@@ -136,7 +136,7 @@ watch(
             sprint_status: res.sprint_status,
             project: res.project,
             started_at: [],
-            finished_at: ''
+            finished_at: null
           }
         }
       })
