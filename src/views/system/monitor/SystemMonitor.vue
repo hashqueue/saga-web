@@ -1,23 +1,46 @@
 <template>
-  <a-row :gutter="24">
-    <a-col :span="12">
-      <a-card class="data-card" title="Memory Real-Time Data">
-        <v-chart class="chart" :option="memoryOption" />
-      </a-card>
-    </a-col>
-    <a-col :span="12">
-      <a-card class="data-card" title="Disk Real-Time Data">
-        <v-chart class="chart" :option="diskOption" />
-      </a-card>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24">
-    <a-col :span="12">
-      <a-card class="data-card" title="CPU Real-Time Data">
-        <v-chart class="chart" :option="cpuOption" />
-      </a-card>
-    </a-col>
-  </a-row>
+  <a-card style="width: 100%; height: 100%">
+    <a-row :gutter="24">
+      <a-col :span="12">
+          <v-chart class="chart" :option="cpuOption" />
+      </a-col>
+      <a-col :span="12">
+          <v-chart class="chart" :option="netOption" />
+      </a-col>
+    </a-row>
+    <a-row :gutter="24">
+      <a-col :span="12">
+          <v-chart class="chart" :option="memoryOption" />
+      </a-col>
+      <a-col :span="12">
+          <v-chart class="chart" :option="diskOption" />
+      </a-col>
+    </a-row>
+  </a-card>
+<!--  <a-row :gutter="24">-->
+<!--    <a-col :span="11">-->
+<!--      <a-card class="data-card" title="CPU Real-Time Data">-->
+<!--        <v-chart class="chart" :option="cpuOption" />-->
+<!--      </a-card>-->
+<!--    </a-col>-->
+<!--    <a-col :span="11">-->
+<!--      <a-card class="data-card" title="Net Real-Time Data">-->
+<!--        <v-chart class="chart" :option="netOption" />-->
+<!--      </a-card>-->
+<!--    </a-col>-->
+<!--  </a-row>-->
+<!--  <a-row :gutter="24">-->
+<!--    <a-col :span="11">-->
+<!--      <a-card class="data-card" title="Memory Real-Time Data">-->
+<!--        <v-chart class="chart" :option="memoryOption" />-->
+<!--      </a-card>-->
+<!--    </a-col>-->
+<!--    <a-col :span="11">-->
+<!--      <a-card class="data-card" title="Disk Real-Time Data">-->
+<!--        <v-chart class="chart" :option="diskOption" />-->
+<!--      </a-card>-->
+<!--    </a-col>-->
+<!--  </a-row>-->
 </template>
 
 <script setup>
@@ -44,8 +67,10 @@ const usedMemory = ref([])
 const memoryPercent = ref([])
 const memoryOption = ref({
   title: {
-    // text: 'Memory Real-Time Data'
-    text: ''
+    text: 'Memory Real-Time Data',
+    left: 'center',
+    top: 'middle',
+    // text: ''
   },
   tooltip: {
     trigger: 'axis'
@@ -92,17 +117,22 @@ const memoryOption = ref({
 // cpu
 const cpuCount = ref([])
 const cpuPercent = ref([])
+const cpuLoadAvg1 = ref([])
+const cpuLoadAvg5 = ref([])
+const cpuLoadAvg15 = ref([])
 const cpuOption = ref({
   title: {
-    // text: 'CPU Real-Time Data'
-    text: ''
+    text: 'CPU Real-Time Data',
+    left: 'center',
+    top: 'middle'
+    // text: ''
   },
   tooltip: {
     trigger: 'axis'
   },
   legend: {
     left: 'center',
-    data: ['CPU Count(核)', 'CPU Percent(%)']
+    data: ['CPU Count(核)', 'CPU Percent(%)', 'CPU LoadAvg 1', 'CPU LoadAvg 5', 'CPU LoadAvg 15']
   },
   xAxis: {
     type: 'category',
@@ -121,6 +151,70 @@ const cpuOption = ref({
       name: 'CPU Percent(%)',
       type: 'line',
       data: cpuPercent.value
+    },
+    {
+      name: 'CPU LoadAvg 1',
+      type: 'line',
+      data: cpuLoadAvg1.value
+    },
+    {
+      name: 'CPU LoadAvg 5',
+      type: 'line',
+      data: cpuLoadAvg5.value
+    },
+    {
+      name: 'CPU LoadAvg 15',
+      type: 'line',
+      data: cpuLoadAvg15.value
+    }
+  ]
+})
+// net
+const netBytesSent = ref([])
+const netBytesReceive = ref([])
+const netPacketsSent = ref([])
+const netPacketsReceive = ref([])
+const netOption = ref({
+  title: {
+    text: 'Net Real-Time Data',
+    left: 'center',
+    top: 'middle'
+    // text: ''
+  },
+  tooltip: {
+    trigger: 'axis'
+  },
+  legend: {
+    left: 'center',
+    data: ['Net Bytes Sent(KB)', 'Net Bytes Receive(KB)', 'Net Packets Sent(个)', 'Net Packets Receive(个)']
+  },
+  xAxis: {
+    type: 'category',
+    data: date.value
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      name: 'Net Bytes Sent(KB)',
+      type: 'line',
+      data: netBytesSent.value
+    },
+    {
+      name: 'Net Bytes Receive(KB)',
+      type: 'line',
+      data: netBytesReceive.value
+    },
+    {
+      name: 'Net Packets Sent(个)',
+      type: 'line',
+      data: netPacketsSent.value
+    },
+    {
+      name: 'Net Packets Receive(个)',
+      type: 'line',
+      data: netPacketsReceive.value
     }
   ]
 })
@@ -131,8 +225,10 @@ const freeDisk = ref([])
 const diskPercent = ref([])
 const diskOption = ref({
   title: {
-    // text: 'Disk Real-Time Data'
-    text: ''
+    text: 'Disk Real-Time Data',
+    left: 'center',
+    top: 'middle'
+    // text: ''
   },
   tooltip: {
     trigger: 'axis'
@@ -187,14 +283,21 @@ onMounted(() => {
   )
   eventSource.onmessage = (event) => {
     // 当接收到SSE推送过来的数据时触发
-    // date
     const serverData = JSON.parse(event.data)
-    const dateNow = new Date()
-    const now = dateNow.toLocaleTimeString()
-    removeArrFirstElementBeginPushElement(date.value, now)
+    // const dateNow = new Date()
+    // const now = dateNow.toLocaleTimeString()
+    removeArrFirstElementBeginPushElement(date.value, serverData.time)
     //cpu
     removeArrFirstElementBeginPushElement(cpuCount.value, serverData.cpu.cpu_count)
     removeArrFirstElementBeginPushElement(cpuPercent.value, serverData.cpu.cpu_percent)
+    removeArrFirstElementBeginPushElement(cpuLoadAvg1.value, serverData.cpu.cpu_loadavg_1)
+    removeArrFirstElementBeginPushElement(cpuLoadAvg5.value, serverData.cpu.cpu_loadavg_5)
+    removeArrFirstElementBeginPushElement(cpuLoadAvg15.value, serverData.cpu.cpu_loadavg_15)
+    // net
+    removeArrFirstElementBeginPushElement(netBytesSent.value, serverData.net.bytes_sent)
+    removeArrFirstElementBeginPushElement(netBytesReceive.value, serverData.net.bytes_recv)
+    removeArrFirstElementBeginPushElement(netPacketsSent.value, serverData.net.packets_sent)
+    removeArrFirstElementBeginPushElement(netPacketsReceive.value, serverData.net.packets_recv)
     // memory
     removeArrFirstElementBeginPushElement(totalMemory.value, serverData.memory.total_memory)
     removeArrFirstElementBeginPushElement(availableMemory.value, serverData.memory.available_memory)
@@ -223,9 +326,11 @@ onUnmounted(() => {
 <style scoped>
 .chart {
   width: 100%;
-  height: 450px;
+  height: 400px;
 }
+/*
 .data-card {
   margin-bottom: 10px;
 }
+ */
 </style>
