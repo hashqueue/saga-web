@@ -1,8 +1,11 @@
 <template>
   <a-modal
+    :closable="closable"
+    :centered="centered"
     :open="modalOpen"
     :width="modalWidth"
     :title="modalTitle"
+    :keyboard="keyboard"
     :ok-text="modalOkText"
     :cancel-text="modalCancelText"
     @ok="onOk"
@@ -17,6 +20,21 @@
 
 <script setup>
 defineProps({
+  centered: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  keyboard: {
+    type: Boolean,
+    required: false,
+    default: true
+  },
+  closable: {
+    type: Boolean,
+    required: false,
+    default: true
+  },
   destroyModalOnClose: {
     type: Boolean,
     required: false,

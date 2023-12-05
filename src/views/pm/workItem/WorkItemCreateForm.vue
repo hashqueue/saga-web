@@ -1,7 +1,10 @@
 <template>
   <standard-modal
     :modal-open="modalOpen"
-    :modal-width="'70%'"
+    :closable="false"
+    :centered="true"
+    :keyboard="false"
+    :modal-width="'55%'"
     :modal-title="title"
     :modal-ok-text="'提交'"
     :modal-cancel-text="'取消'"
@@ -79,6 +82,7 @@
             </a-form-item>
           </a-col>
         </a-row>
+        <a-divider orientation="left">描述</a-divider>
         <a-form-item name="desc" label="描述">
           <markdown-editor
             v-model:content-value="createUpdateForm.desc"
@@ -133,7 +137,7 @@ const userStore = useUserStore()
 
 const userUploadFileIds = ref([])
 const mdEditorOptions = ref({
-  height: '650px',
+  height: '250px',
   width: '100%',
   upload: {
     url: `${import.meta.env.VITE_BASE_URL}/pm/files/`,

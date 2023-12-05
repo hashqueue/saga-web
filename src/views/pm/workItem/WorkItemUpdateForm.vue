@@ -1,7 +1,10 @@
 <template>
   <standard-modal
     :modal-open="modalOpen"
-    :modal-width="'75%'"
+    :closable="false"
+    :centered="true"
+    :keyboard="false"
+    :modal-width="'65%'"
     :modal-title="title"
     :modal-ok-text="'提交'"
     :modal-cancel-text="'取消'"
@@ -15,28 +18,6 @@
         <a-col :span="18">
           <a-tabs v-model:activeKey="contentActiveKey">
             <a-tab-pane key="detail" tab="详情">
-              <a-divider orientation="left">基础信息</a-divider>
-              <a-descriptions v-if="workItemInfo">
-                <a-descriptions-item label="ID">{{ workItemInfo.id }}</a-descriptions-item>
-                <a-descriptions-item label="类型">
-                  <a-tag color="processing">{{
-                    workItemTypesEnum[workItemInfo.work_item_type].value
-                  }}</a-tag>
-                </a-descriptions-item>
-                <a-descriptions-item label="创建人">{{
-                  workItemInfo.created_by
-                }}</a-descriptions-item>
-                <a-descriptions-item label="最后修改人">{{
-                  workItemInfo.updated_by
-                }}</a-descriptions-item>
-                <a-descriptions-item label="创建时间">{{
-                  workItemInfo.created_at
-                }}</a-descriptions-item>
-                <a-descriptions-item label="修改时间">{{
-                  workItemInfo.updated_at
-                }}</a-descriptions-item>
-              </a-descriptions>
-              <a-divider orientation="left">属性</a-divider>
               <a-form
                 ref="createUpdateFormRef"
                 :model="createUpdateForm"
@@ -45,12 +26,28 @@
                 <a-form-item name="name" label="标题">
                   <a-input v-model:value="createUpdateForm.name" placeholder="请输入标题" />
                 </a-form-item>
-                <a-form-item name="desc" label="描&nbsp&nbsp&nbsp述">
-                  <markdown-editor
-                    v-model:content-value="createUpdateForm.desc"
-                    :editor-options="mdEditorOptions"
-                  />
-                </a-form-item>
+                <a-divider orientation="left">基础信息</a-divider>
+                <a-descriptions v-if="workItemInfo">
+                  <a-descriptions-item label="ID">{{ workItemInfo.id }}</a-descriptions-item>
+                  <a-descriptions-item label="类型">
+                    <a-tag color="processing">{{
+                      workItemTypesEnum[workItemInfo.work_item_type].value
+                    }}</a-tag>
+                  </a-descriptions-item>
+                  <a-descriptions-item label="创建人">{{
+                    workItemInfo.created_by
+                  }}</a-descriptions-item>
+                  <a-descriptions-item label="最后修改人">{{
+                    workItemInfo.updated_by
+                  }}</a-descriptions-item>
+                  <a-descriptions-item label="创建时间">{{
+                    workItemInfo.created_at
+                  }}</a-descriptions-item>
+                  <a-descriptions-item label="修改时间">{{
+                    workItemInfo.updated_at
+                  }}</a-descriptions-item>
+                </a-descriptions>
+                <a-divider orientation="left">属性</a-divider>
                 <a-row :gutter="24">
                   <a-col :span="12">
                     <a-form-item label="所属项目">
@@ -141,6 +138,13 @@
                     </a-form-item>
                   </a-col>
                 </a-row>
+                <a-divider orientation="left">描述</a-divider>
+                <a-form-item name="desc" label="描&nbsp&nbsp&nbsp述">
+                  <markdown-editor
+                    v-model:content-value="createUpdateForm.desc"
+                    :editor-options="mdEditorOptions"
+                  />
+                </a-form-item>
                 <a-divider orientation="left">关注者</a-divider>
                 <a-form-item name="followers" label="&nbsp关&nbsp注&nbsp者&nbsp">
                   <a-select
@@ -205,10 +209,10 @@
         </a-col>
         <a-col :span="6">
           <a-row :gutter="24" class="height-100">
-            <a-col :span="1" class="height-100">
-              <div style="height: 100%; width: 1px; background-color: #586069"></div>
+            <a-col :span="2">
+              <a-divider type="vertical" style="height: 100%; background-color: #586069" />
             </a-col>
-            <a-col :span="22" class="height-100">
+            <a-col :span="22">
               <a-tabs v-model:activeKey="activityActiveKey">
                 <a-tab-pane key="comment" tab="评论">
                   <a-list
@@ -238,10 +242,10 @@
                       <!--  </a-list-item>-->
                     </template>
                   </a-list>
-                  <a-comment class="comment">
+                  <a-comment>
                     <template #content>
-                      <a-form-item>
-                        <a-textarea
+                      <a-form-item
+                        ><a-textarea
                           v-model:value="commentValue"
                           :placeholder="'请输入评论内容'"
                           :rows="5"
@@ -384,7 +388,7 @@ const createUpdateRules = {
   work_item_status: [{ required: true, trigger: 'change', message: '工作项状态不能为空' }]
 }
 const mdEditorOptions = ref({
-  height: '650px',
+  height: '150px',
   width: '100%',
   upload: {
     url: `${import.meta.env.VITE_BASE_URL}/pm/files/`,
@@ -616,8 +620,5 @@ watch(
 <style scoped>
 .height-100 {
   height: 100%;
-}
-.comment {
-  margin-top: 20px;
 }
 </style>
