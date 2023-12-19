@@ -4,7 +4,7 @@
     :closable="false"
     :centered="true"
     :keyboard="false"
-    :modal-width="'65%'"
+    :modal-width="'70%'"
     :modal-title="title"
     :modal-ok-text="'提交'"
     :modal-cancel-text="'取消'"
